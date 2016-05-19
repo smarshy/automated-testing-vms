@@ -40,7 +40,7 @@ The QA process is divided as follows:
 ## Steps to run tests:
 
 - Currently, used `python 2.7`
-- Clone project: `git clone https://github.com/jayesh92/vms.git`
+- Clone project: `git clone https://github.com/smarshy/automated-testing-vms.git`
 - In the root folder of the project, startup a new virtual environment
   `virtualenv -p /usr/bin/python2.7 venv`
 - Activate virtualenv, `source venv/bin/activate`
@@ -54,3 +54,5 @@ The QA process is divided as follows:
 - If all tests pass, `OK` will be received at the end.
 - For functional tests, a firefox window for each test will open up
   automatically and close after simulation of tests.
+
+Note: The current setup uses one of the latest versions of Selenium. You will run into errors if the this version is incompatible with your firefox version and does not support it. In that case, follow [this](https://support.mozilla.org/en-US/kb/find-what-version-firefox-you-are-using) guide to find out your browser version and accordingly install a Selenium version compatible with it.
