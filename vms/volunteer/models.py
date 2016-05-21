@@ -1,7 +1,13 @@
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
+from django.core.validators import (
+            RegexValidator,
+            MaxValueValidator,
+            MinValueValidator
+            )
 from django.db import models
+
 from organization.models import Organization
+
 
 class Volunteer(models.Model):
     first_name = models.CharField(
@@ -56,7 +62,8 @@ class Volunteer(models.Model):
         max_length=20,
         validators=[
             RegexValidator(
-                r'^[0-9]+$',
+                r'^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$',
+                message="Please enter a valid phone number",
             ),
         ],
     )
@@ -69,10 +76,10 @@ class Volunteer(models.Model):
             ),
         ],
     )
-    #Organization to Volunteer is a one-to-many relationship
+    # Organization to Volunteer is a one-to-many relationship
     organization = models.ForeignKey(Organization, null=True)
-    #EmailField automatically checks if email address is a valid format 
-    email = models.EmailField(max_length=45)
+    # EmailField automatically checks if email address is a valid format
+    email = models.EmailField(max_length=45, unique=True)
     websites = models.TextField(
         blank=True,
         validators=[
@@ -97,6 +104,16 @@ class Volunteer(models.Model):
             ),
         ],
     )
-    #all resumes are stored in /srv/vms/resume/
-    resume_file = models.FileField(upload_to='vms/resume/', max_length=75, blank=True)
+    # all resumes are stored in /srv/vms/resume/
+    resume_file = models.FileField(
+        upload_to='vms/resume/',
+        max_length=75,
+        blank=True
+        )
+    reminder_days = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(50), MinValueValidator(1)],
+        blank=True
+        )
+
     user = models.OneToOneField(User)
